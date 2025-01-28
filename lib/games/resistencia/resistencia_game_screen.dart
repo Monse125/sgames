@@ -11,14 +11,18 @@ class ResistanceGameScreen extends StatefulWidget {
   final int amountReps;
   final int lenghtRep;
   final int lenghtRest;
+  final int setRest;
+  final int amountSets;
 
-  ResistanceGameScreen({
+  const ResistanceGameScreen({super.key,
     required this.maxForce,
     required this.lowerBound,
     required this.upperBound,
     required this.amountReps,
     required this.lenghtRep,
     required this.lenghtRest,
+    required this.setRest,
+    required this.amountSets,
   });
 
   @override
@@ -26,11 +30,8 @@ class ResistanceGameScreen extends StatefulWidget {
 }
 
 class _ResistanceGameScreenState extends State<ResistanceGameScreen> {
-
-
   @override
   Widget build(BuildContext context) {
-    // Obtener el BluetoothManager desde Provider
     final bluetoothManager = Provider.of<BluetoothManager>(context, listen: false);
 
     return Scaffold(
@@ -43,7 +44,8 @@ class _ResistanceGameScreenState extends State<ResistanceGameScreen> {
           amountReps: widget.amountReps,
           lenghtRep: widget.lenghtRep,
           lenghtRest: widget.lenghtRest,
-
+          setRest: widget.setRest,
+          amountSets: widget.amountSets,
         ),
       ),
     );

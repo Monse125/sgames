@@ -7,6 +7,8 @@ import 'package:sgames/states/bluetooth_manager.dart';
 
 
 class ResistenciaSetMenu extends StatefulWidget {
+  const ResistenciaSetMenu({super.key});
+
   @override
   _ResistenciaSetMenuState createState() => _ResistenciaSetMenuState();
 }
@@ -18,6 +20,8 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
   int amountReps = 1;
   int lenghtRep = 5;
   int lenghtRest = 10;
+  int amountSets = 1;
+  int lenghtRestSet = 5;
 
 
   //TextStyles repetidos
@@ -153,6 +157,8 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
         amountReps: amountReps,
         lenghtRep: lenghtRep,
         lenghtRest: lenghtRest,
+        setRest: lenghtRestSet,
+        amountSets: amountSets,
       )),
     );
   }
@@ -191,7 +197,7 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
                 ),
             ],),
 
-            SizedBox(height: 30),
+            SizedBox(height: 10),
 
             // Contenedor de configuración
             Card(
@@ -199,64 +205,70 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Fuerza máxima", style: titulosCard),
-                    SizedBox(height: 10),
-                    Row(
+              child: SizedBox(
+                height: 600, // Altura máxima fija para la tarjeta
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Cuadrado de entrada manual
-                        Expanded(
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: "$maxForce kg",
+                        Text("Fuerza máxima", style: titulosCard),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: "$maxForce kg",
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    maxForce = double.tryParse(value) ?? 0.0;
+                                  });
+                                },
+                              ),
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                maxForce = double.tryParse(value) ?? 0.0;
-                              });
-                            },
-                          ),
+                            SizedBox(width: 20),
+                            ElevatedButton(
+                              onPressed: _measureMaxForce,
+                              child: Text("Medir", style: TextStyle(fontSize: 20)),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 20),
-                        // Botón para medir fuerza máxima
-                        ElevatedButton(
-                          onPressed: _measureMaxForce,
-                          child: Text("Medir", style: TextStyle(
-                            fontSize: 20 ),),
+
+                        SizedBox(height: 20),
+                        Text("Intervalo de interés", style: titulosCard),
+                        SizedBox(height: 10),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _intervalButton(lowerBound, true),
+                            SizedBox(width: 10),
+                            Text("-", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                            SizedBox(width: 10),
+                            _intervalButton(upperBound, false),
+                          ],
                         ),
+                        SizedBox(height: 20),
+                        _configOption("Repeticiones", amountReps, 1, 20, (val) => setState(() => amountReps = val)),
+                        _configOption("Duración Repetición (s)", lenghtRep, 1, 60, (val) => setState(() => lenghtRep = val)),
+                        _configOption("Duración Descanso (s)", lenghtRest, 1, 60, (val) => setState(() => lenghtRest = val)),
+                        SizedBox(height: 20),
+                        Text("Configuración de sets", style: titulosCard),
+                        _configOption("Sets", amountReps, 1, 10, (val) => setState(() => amountReps = val)),
+                        _configOption("Duración Descanso Set (s)", lenghtRestSet, 5, 60, (val) => setState(() => lenghtRestSet = val)),
                       ],
                     ),
-
-                    SizedBox(height: 20),
-                    Text("Intervalo de interés", style: titulosCard),
-                    SizedBox(height: 10),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _intervalButton(lowerBound, true),  // Pasa el booleano correctamente
-                        SizedBox(width: 10),
-                        Text("-", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                        SizedBox(width: 10),
-                        _intervalButton(upperBound, false), // Pasa el booleano correctamente
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    _configOption("Repeticiones", amountReps, 1, 20, (val) => setState(() => amountReps = val)),
-                    _configOption("Duración Repetición (s)", lenghtRep, 1, 60, (val) => setState(() => lenghtRep = val)),
-                    _configOption("Duración Descanso (s)", lenghtRest, 1, 60, (val) => setState(() => lenghtRest = val)),
-                  ],
+                  ),
                 ),
               ),
             ),
 
-            SizedBox(height: 40),
+            SizedBox(height: 10),
 
 
           ],

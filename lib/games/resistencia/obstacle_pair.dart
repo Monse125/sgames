@@ -1,44 +1,50 @@
-
-
-
-import 'package:flame/game.dart';
-
+import 'package:flame/components.dart';
 import 'obstaculo.dart';
+import 'resistencia_game.dart';
 
 class ObstaclePair {
   final int id;
-  final Obstacle upper;
-  final Obstacle lower;
+  final double speed;
+  final double screenWidth;
+  final double screenHeight;
+  bool inScreen = true;
+  bool wasError = false;
 
-  bool get inScreen => upper.inScreen || lower.inScreen;
-  bool wasError = true; // Se usará en el futuro
+  late Obstacle upper;
+  late Obstacle lower;
 
   ObstaclePair({
     required this.id,
-    required double speed,
-    required double screenWidth,
-    required double screenHeight,
+    required this.speed,
+    required this.screenWidth,
+    required this.screenHeight,
     required double lowerX,
     required double upperX,
-  })  : upper = Obstacle(
-    speed: speed,
-    screenWidth: screenWidth,
-    screenHeight: screenHeight,
-    position: Vector2(0, -screenHeight), // Parte superior fuera de la pantalla
-    size: Vector2(lowerX, screenHeight),
-    isUpper: true,
-  ),
-        lower = Obstacle(
-          speed: speed,
-          screenWidth: screenWidth,
-          screenHeight: screenHeight,
-          position: Vector2(upperX, -screenHeight), // Parte inferior fuera de la pantalla
-          size: Vector2(screenWidth - upperX, screenHeight),
-          isUpper: true,
-        );
+  }) {
+    double obstacleHeight = 50; // Altura fija para ambos obstáculos
 
-  void addToGame(FlameGame game) {
+    upper = Obstacle(
+      position: Vector2(upperX, 0),
+      size: Vector2(50, obstacleHeight),
+    );
+
+    lower = Obstacle(
+      position: Vector2(lowerX, screenHeight - obstacleHeight),
+      size: Vector2(50, obstacleHeight),
+    );
+  }
+
+  void addToGame(ResistanceGame game) {
     game.add(upper);
     game.add(lower);
+  }
+
+  void update(double dt) {
+    upper.position.y += speed * dt;
+    lower.position.y += speed * dt;
+
+    if (upper.position.y > screenHeight || lower.position.y > screenHeight) {
+      inScreen = false;
+    }
   }
 }

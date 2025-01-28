@@ -23,13 +23,20 @@ class ResistanceGame extends FlameGame with TapDetector {
   final int amountReps;
   final int lenghtRep;
   final int lenghtRest;
+  final int setRest;
+  final int amountSets;
 
   double currentForce = 0;
   double elapsedTime = 0;
   bool gameStarted = false;
   int completedReps = 0;
+
   List<ObstaclePair> activeObstacles = [];
   int obstacleIdCounter = 0;
+
+  bool showingRestText = false;
+  int totalErrors = 0;
+
 
   ResistanceGame({
     required this.bluetoothManager,
@@ -39,6 +46,8 @@ class ResistanceGame extends FlameGame with TapDetector {
     required this.amountReps,
     required this.lenghtRep,
     required this.lenghtRest,
+    required this.setRest,
+    required this.amountSets,
   }); // Constructor
 
   @override
@@ -124,7 +133,6 @@ class ResistanceGame extends FlameGame with TapDetector {
 
       double lowerX = (lowerBound / 100) * screenWidth;
       double upperX = (upperBound / 100) * screenWidth;
-      double obstacleHeight = screenHeight;
 
       // Crear y agregar un nuevo ObstaclePair
       final obstaclePair = ObstaclePair(
@@ -157,13 +165,18 @@ class ResistanceGame extends FlameGame with TapDetector {
   void endGame() async {
     gameStarted = false;
     endText.text = "Fin!";
-
+    totalErrors = activeObstacles.where((pair) => pair.wasError).length;
 
     await bluetoothManager.stopReceivingMeasurements(bluetoothManager.connectedDevice!);
 
-
     await Future.delayed(Duration(seconds: 2));
-    onRemove();
+    endText.text ="Errores: $totalErrors";
+    await Future.delayed(Duration(seconds: setRest - 2));
+
+    goToMenu();
+  }
+
+  void goToMenu() {
     Navigator.pushReplacement(
       buildContext!,
       MaterialPageRoute(builder: (context) => ResistenciaSetMenu()),
@@ -177,17 +190,25 @@ class ResistanceGame extends FlameGame with TapDetector {
 
     if (gameStarted) {
       elapsedTime += dt;
-      timerText.text = "${elapsedTime.toStringAsFixed(2)}s"; // Dos decimales
+      timerText.text = "${elapsedTime.toStringAsFixed(2)}s";
     }
 
     double? newWeight = bluetoothManager.currentWeight;
     if (newWeight != null) {
       currentForce = newWeight.clamp(0, maxForce);
-      ball.position.x = size.x * ((currentForce / maxForce));
+      ball.position.x = size.x * (currentForce / maxForce);
     }
 
-    // Verificar si todos los obstáculos han salido de la pantalla
-    if (completedReps >= amountReps && activeObstacles.every((obstaclePair) => !obstaclePair.inScreen)) {
+    for (final obstaclePair in activeObstacles) {
+      if (ball.toRect().overlaps(obstaclePair.upper.toRect()) ||
+          ball.toRect().overlaps(obstaclePair.lower.toRect())) {
+        obstaclePair.wasError = true;
+      }
+    }
+
+    activeObstacles.removeWhere((pair) => !pair.inScreen);
+
+    if (completedReps >= amountReps && activeObstacles.isEmpty) {
       endGame();
     }
   }
