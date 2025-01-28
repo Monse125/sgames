@@ -21,16 +21,17 @@ class ObstaclePair {
     required double lowerX,
     required double upperX,
   }) {
+
     double obstacleHeight = 50; // Altura fija para ambos obstáculos
 
     upper = Obstacle(
-      position: Vector2(upperX, 0),
-      size: Vector2(50, obstacleHeight),
+      position: Vector2(0,-screenHeight),
+      size: Vector2(lowerX, screenHeight),
     );
 
     lower = Obstacle(
-      position: Vector2(lowerX, screenHeight - obstacleHeight),
-      size: Vector2(50, obstacleHeight),
+      position: Vector2(upperX, -screenHeight),
+      size: Vector2(screenWidth - upperX, screenHeight),
     );
   }
 

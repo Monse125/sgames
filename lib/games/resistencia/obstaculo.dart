@@ -8,6 +8,6 @@ class Obstacle extends PositionComponent {
   @override
   void render(Canvas canvas) {
     final paint = Paint()..color = Colors.red;
-    canvas.drawRect(size.toRect(), paint);
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.x, size.y), paint);
   }
 }

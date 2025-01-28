@@ -28,13 +28,15 @@ class ResistanceGame extends FlameGame with TapDetector {
 
   double currentForce = 0;
   double elapsedTime = 0;
-  bool gameStarted = false;
   int completedReps = 0;
+  int completedSets = 0;
 
   List<ObstaclePair> activeObstacles = [];
   int obstacleIdCounter = 0;
 
+  bool gameStarted = false;
   bool showingRestText = false;
+  bool showingCountdown = false;
   int totalErrors = 0;
 
 
@@ -89,6 +91,7 @@ class ResistanceGame extends FlameGame with TapDetector {
     );
     add(timerText);
 
+    //Texto de fin
     endText = TextComponent(
       text: "",
       position: Vector2(size.x / 2, size.y / 2),
@@ -103,11 +106,18 @@ class ResistanceGame extends FlameGame with TapDetector {
 
     // Iniciar la escucha del peso si hay un dispositivo conectado
     if (bluetoothManager.connectedDevice != null) {
-      await bluetoothManager.startReceivingMeasurements( );
+      //await bluetoothManager.startReceivingMeasurements( );
     }
   }
 
+  // Inicia la cuenta regresiva antes del inicio del juego
   void startCountdown() async {
+    showingCountdown = true;
+
+    if (completedSets >= amountSets) {
+      endGame();
+      return;
+    }
     await Future.delayed(Duration(seconds: 2));
     for (int i = 3; i > 0; i--) {
       countdownText.text = "$i";
@@ -115,64 +125,93 @@ class ResistanceGame extends FlameGame with TapDetector {
     }
     countdownText.text = "¡Ya!";
     await Future.delayed(Duration(seconds: 1));
-    countdownText.removeFromParent(); // Eliminar texto de la cuenta regresiva
-    spawnObstacles();
-    gameStarted = true; // Iniciar el juego
+    countdownText.text = "";
+    elapsedTime = 0;
+    timerText.text = "0.00s";
+    startSet();
   }
 
-  void spawnObstacles() {
+  // Inicia un set de repeticiones
+  void startSet() {
+
+    completedSets++;
+    completedReps = 0;
+    activeObstacles.clear(); // Reiniciar obstáculos para el nuevo set
+    gameStarted = true;
+    showingCountdown = false;
+    startRep();
+  }
+
+  // Inicia una repetición dentro de un set
+  void startRep() {
+
+    spawnObstacle();
+
+    async.Timer(Duration(seconds: lenghtRep), () {
+      if (completedReps < amountReps) {
+        async.Timer(Duration(seconds: lenghtRest), () {
+          startRep();
+        });
+      } else {
+        async.Timer(Duration(seconds: 4), (){
+        showRestText();
+        });
+        }
+
+      });
+  }
+
+
+  // Genera un par de obstáculos para la repetición
+  void spawnObstacle() {
     double screenWidth = size.x;
     double screenHeight = size.y;
     final double obstacleSpeed = screenHeight / lenghtRep;
 
-    void startRep(int repIndex) {
-      if (repIndex >= amountReps) {
-        endGame();
-        return;
-      }
+    double lowerX = (lowerBound / 100) * screenWidth;
+    double upperX = (upperBound / 100) * screenWidth;
 
-      double lowerX = (lowerBound / 100) * screenWidth;
-      double upperX = (upperBound / 100) * screenWidth;
+    final obstaclePair = ObstaclePair(
+      id: obstacleIdCounter++,
+      speed: obstacleSpeed,
+      screenWidth: screenWidth,
+      screenHeight: screenHeight,
+      lowerX: lowerX,
+      upperX: upperX,
+    );
 
-      // Crear y agregar un nuevo ObstaclePair
-      final obstaclePair = ObstaclePair(
-        id: obstacleIdCounter++,
-        speed: obstacleSpeed,
-        screenWidth: screenWidth,
-        screenHeight: screenHeight,
-        lowerX: lowerX,
-        upperX: upperX,
-      );
-
-      obstaclePair.addToGame(this);
-      activeObstacles.add(obstaclePair);
-
-      completedReps++;
-
-      // Iniciar la siguiente repetición después de `lenghtRep` segundos
-      async.Timer(Duration(seconds: lenghtRep), () {
-        if (completedReps < amountReps) {
-          async.Timer(Duration(seconds: lenghtRest), () {
-            startRep(completedReps);
-          });
-        }
-      });
-    }
-
-    startRep(0); // Iniciar la primera repetición
+    obstaclePair.addToGame(this);
+    activeObstacles.add(obstaclePair);
+    completedReps++;
   }
 
-  void endGame() async {
+
+  // Muestra el texto de descanso entre sets
+  void showRestText() async {
+    showingRestText = true;
     gameStarted = false;
-    endText.text = "Fin!";
     totalErrors = activeObstacles.where((pair) => pair.wasError).length;
+    endText.text = "Errores: $totalErrors";
+    if (completedSets < amountSets) {
+      await Future.delayed(Duration(seconds: setRest - 5));
+      endText.text = "";
+      countdownText.text = "¡Prepárate!";
+      startCountdown();
+    }
+    showingRestText = false;
+  }
 
-    await bluetoothManager.stopReceivingMeasurements(bluetoothManager.connectedDevice!);
+  // Finaliza el juego
+  void endGame() async {
 
-    await Future.delayed(Duration(seconds: 2));
-    endText.text ="Errores: $totalErrors";
-    await Future.delayed(Duration(seconds: setRest - 2));
+    await Future.delayed(Duration(seconds: 4));
+    endText.text = "Fin!";
 
+    //await bluetoothManager.stopReceivingMeasurements(bluetoothManager.connectedDevice!);
+
+    await Future.delayed(Duration(seconds: 3));
+
+    //timerText.text =
     goToMenu();
   }
 
@@ -193,13 +232,16 @@ class ResistanceGame extends FlameGame with TapDetector {
       timerText.text = "${elapsedTime.toStringAsFixed(2)}s";
     }
 
-    double? newWeight = bluetoothManager.currentWeight;
+    //double? newWeight = bluetoothManager.currentWeight;
+    double? newWeight = 0;
     if (newWeight != null) {
       currentForce = newWeight.clamp(0, maxForce);
       ball.position.x = size.x * (currentForce / maxForce);
     }
 
     for (final obstaclePair in activeObstacles) {
+      obstaclePair.update(dt);  // <-- Aquí llamamos a la actualización de los obstáculos
+
       if (ball.toRect().overlaps(obstaclePair.upper.toRect()) ||
           ball.toRect().overlaps(obstaclePair.lower.toRect())) {
         obstaclePair.wasError = true;
@@ -208,8 +250,11 @@ class ResistanceGame extends FlameGame with TapDetector {
 
     activeObstacles.removeWhere((pair) => !pair.inScreen);
 
-    if (completedReps >= amountReps && activeObstacles.isEmpty) {
-      endGame();
+    // Verificar si el set ha terminado y no quedan obstáculos en pantalla
+    if (!gameStarted && activeObstacles.isEmpty && !showingRestText && !showingCountdown) {
+      if (completedSets >= amountSets) {
+        endGame(); // Asegurar que el juego finaliza
+      }
     }
   }
 

@@ -21,7 +21,7 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
   int lenghtRep = 5;
   int lenghtRest = 10;
   int amountSets = 1;
-  int lenghtRestSet = 5;
+  int lenghtRestSet = 10;
 
 
   //TextStyles repetidos
@@ -259,8 +259,8 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
                         _configOption("Duración Descanso (s)", lenghtRest, 1, 60, (val) => setState(() => lenghtRest = val)),
                         SizedBox(height: 20),
                         Text("Configuración de sets", style: titulosCard),
-                        _configOption("Sets", amountReps, 1, 10, (val) => setState(() => amountReps = val)),
-                        _configOption("Duración Descanso Set (s)", lenghtRestSet, 5, 60, (val) => setState(() => lenghtRestSet = val)),
+                        _configOption("Sets", amountSets, 1, 10, (val) => setState(() => amountSets = val)),
+                        _configOption("Duración Descanso Set (s)", lenghtRestSet, 10, 60, (val) => setState(() => lenghtRestSet = val)),
                       ],
                     ),
                   ),
