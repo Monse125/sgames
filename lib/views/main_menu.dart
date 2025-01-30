@@ -9,6 +9,8 @@ import 'package:flutter/services.dart';
 import 'gamesMenus/resistencia_set_menu.dart';
 
 class MainMenu extends StatelessWidget {
+  const MainMenu({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Fuerza orientación vertical al entrar en el menú
@@ -41,7 +43,7 @@ class MainMenu extends StatelessWidget {
                   )
                 ],
               ),
-              Row(
+            Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
