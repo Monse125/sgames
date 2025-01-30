@@ -106,7 +106,7 @@ class ResistanceGame extends FlameGame with TapDetector {
 
     // Iniciar la escucha del peso si hay un dispositivo conectado
     if (bluetoothManager.connectedDevice != null) {
-      //await bluetoothManager.startReceivingMeasurements( );
+      await bluetoothManager.startReceivingMeasurements( );
     }
   }
 
@@ -207,7 +207,7 @@ class ResistanceGame extends FlameGame with TapDetector {
     await Future.delayed(Duration(seconds: 4));
     endText.text = "Fin!";
 
-    //await bluetoothManager.stopReceivingMeasurements(bluetoothManager.connectedDevice!);
+    await bluetoothManager.stopReceivingMeasurements(bluetoothManager.connectedDevice!);
 
     await Future.delayed(Duration(seconds: 3));
 
@@ -232,8 +232,8 @@ class ResistanceGame extends FlameGame with TapDetector {
       timerText.text = "${elapsedTime.toStringAsFixed(2)}s";
     }
 
-    //double? newWeight = bluetoothManager.currentWeight;
-    double? newWeight = 0;
+    double? newWeight = bluetoothManager.currentWeight;
+    //double? newWeight = 0;
     if (newWeight != null) {
       currentForce = newWeight.clamp(0, maxForce);
       ball.position.x = size.x * (currentForce / maxForce);
