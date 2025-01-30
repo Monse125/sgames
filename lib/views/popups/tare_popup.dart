@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sgames/states/bluetooth_manager.dart';
 
 class TarePopup extends StatefulWidget {
+  const TarePopup({super.key});
+
   @override
   _TarePopupState createState() => _TarePopupState();
 }
@@ -68,6 +70,7 @@ class _TarePopupState extends State<TarePopup> {
                     ElevatedButton(
                       onPressed: () async {
                         await bluetoothManager.setTare();
+                        Navigator.of(context).pop();
                       },
                       child: Text("Establecer Tare"),
                     ),

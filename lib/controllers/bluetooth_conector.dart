@@ -4,14 +4,27 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:typed_data';
 
 // Progressor response codes
+const int RES_CMD_RESPONSE = 0;
 const int RES_WEIGHT_MEAS = 1;
 const int RES_RFD_PEAK = 2;
 const int RES_RFD_PEAK_SERIES = 3;
 const int RES_LOW_PWR_WARNING = 4;
 
+
 //Progressor Commands
+const CMD_TARE_SCALE = 100;
 const CMD_START_WEIGHT_MEAS = 101;
+const CMD_STOP_WEIGHT_MEAS = 102;
+const CMD_START_PEAK_RFD_MEAS = 103;
+const CMD_START_PEAK_RFD_MEAS_SERIES = 104;
+const CMD_ADD_CALIBRATION_POINT = 105;
+const CMD_SAVE_CALIBRATION = 106;
+const CMD_GET_APP_VERSION = 107;
+const CMD_GET_ERROR_INFORMATION = 108;
+const CMD_CLR_ERROR_INFORMATION = 109;
 const CMD_ENTER_SLEEP = 110;
+const CMD_GET_BATTERY_VOLTAGE = 111;
+
 
 // Progressors UUIDS
 String progressorService = "7e4e1701-1ea6-40c9-9dcc-13d34ffead57";
@@ -202,7 +215,7 @@ class BluetoothConnector {
     if (controlPointCharacteristic == null) return;
 
     try {
-      await controlPointCharacteristic!.write([CMD_ENTER_SLEEP, 0x00]);
+      await controlPointCharacteristic!.write([CMD_STOP_WEIGHT_MEAS, 0x00]);
       await _weightStreamSubscription?.cancel();
       print("Medición detenida.");
     } catch (e) {
@@ -232,10 +245,18 @@ class BluetoothConnector {
     }
 
     try {
-      // Enviar comando para establecer Tare
-      await controlPointCharacteristic!.write(
-          [CMD_START_WEIGHT_MEAS, 0x01]); // Comando Tare
+      // Detener medición antes de hacer el tare
+      await controlPointCharacteristic!.write([CMD_STOP_WEIGHT_MEAS]);
+      await Future.delayed(Duration(milliseconds: 100)); // Pequeño delay para seguridad
+
+      // Enviar comando de Tare
+      await controlPointCharacteristic!.write([CMD_TARE_SCALE]);
       print("Comando Tare enviado.");
+
+      // Reiniciar la medición después del tare
+      await Future.delayed(Duration(milliseconds: 100));
+      await controlPointCharacteristic!.write([CMD_START_WEIGHT_MEAS]);
+      print("Medición reiniciada después del Tare.");
     } catch (e) {
       print("Error al establecer Tare: $e");
       rethrow;

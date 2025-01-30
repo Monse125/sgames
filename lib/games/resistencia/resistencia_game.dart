@@ -37,6 +37,7 @@ class ResistanceGame extends FlameGame with TapDetector {
   bool gameStarted = false;
   bool showingRestText = false;
   bool showingCountdown = false;
+  bool gameEnds = false;
   int totalErrors = 0;
 
 
@@ -251,8 +252,9 @@ class ResistanceGame extends FlameGame with TapDetector {
     activeObstacles.removeWhere((pair) => !pair.inScreen);
 
     // Verificar si el set ha terminado y no quedan obstáculos en pantalla
-    if (!gameStarted && activeObstacles.isEmpty && !showingRestText && !showingCountdown) {
+    if (!gameStarted && activeObstacles.isEmpty && !showingRestText && !showingCountdown && !gameEnds) {
       if (completedSets >= amountSets) {
+        gameEnds = true;
         endGame(); // Asegurar que el juego finaliza
       }
     }
