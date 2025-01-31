@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // Importa Provider
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sgames/states/bluetooth_manager.dart';
+import 'package:sgames/providers/bluetooth_manager.dart';
 import 'popups/bluetooth_popup.dart';
 import 'popups/tare_popup.dart';
 import 'package:flutter/services.dart';

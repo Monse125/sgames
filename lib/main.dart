@@ -1,17 +1,18 @@
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:sgames/providers/gamesSettings/resistance_settings_provider.dart';
 import 'views/main_menu.dart'; //
 import 'package:provider/provider.dart';
-import 'states/bluetooth_manager.dart';
+import 'providers/bluetooth_manager.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
-        // Proveedor para BluetoothManager
         ChangeNotifierProvider(
-          create: (_) => BluetoothManager(), // No requiere argumentos
-        ),
+            create: (_) => BluetoothManager()),
+        ChangeNotifierProvider(
+            create: (_) => ResistanceSettingsProvider()),
       ],
       child: MyApp(),
     ),

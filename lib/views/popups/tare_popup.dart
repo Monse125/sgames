@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgames/states/bluetooth_manager.dart';
+import 'package:sgames/providers/bluetooth_manager.dart';
 
 class TarePopup extends StatefulWidget {
   const TarePopup({super.key});

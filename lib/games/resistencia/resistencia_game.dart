@@ -3,7 +3,7 @@ import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sgames/states/bluetooth_manager.dart';
+import 'package:sgames/providers/bluetooth_manager.dart';
 import 'dart:async' as async;
 
 import '../../views/gamesMenus/resistencia_set_menu.dart';
