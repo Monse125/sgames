@@ -43,6 +43,7 @@ dependencies:
 
   get:
   permission_handler:
+  fl_chart: ^0.70.0
 
 
 dev_dependencies:

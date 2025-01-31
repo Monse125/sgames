@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgames/games/resistencia/resistencia_game_screen.dart';
 import 'package:flutter/services.dart';
-import 'package:sgames/states/bluetooth_manager.dart';
+import 'package:sgames/providers/bluetooth_manager.dart';
+import 'package:sgames/providers/gamesSettings/resistance_settings_provider.dart';
+import 'package:sgames/views/mvc_meusure.dart';
+import '../../providers/gamesSettings/settings/resistance_game_settings.dart';
 
 
 class ResistenciaSetMenu extends StatefulWidget {
@@ -14,18 +17,8 @@ class ResistenciaSetMenu extends StatefulWidget {
 }
 
 class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
-  double maxForce = 0.0;
-  int lowerBound = 30; // Valor inicial del intervalo de interés
-  int upperBound = 70; // Valor inicial del intervalo de interés
-  int amountReps = 1;
-  int lenghtRep = 5;
-  int lenghtRest = 10;
-  int amountSets = 1;
-  int lenghtRestSet = 10;
-
-
+  late ResistanceGameSettings settings;
   //TextStyles repetidos
-
   TextStyle titulosCard = TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
 
   @override
@@ -37,7 +30,8 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
       DeviceOrientation.portraitDown,
     ]);
 
-    Provider.of<BluetoothManager>(context, listen: false).keepConnectionAlive();
+    final gameSettingsProvider = Provider.of<ResistanceSettingsProvider>(context, listen: false);
+    settings = gameSettingsProvider.settings;
   }
 
   void _showTutorial() {
@@ -61,12 +55,40 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
   }
 
   void _measureMaxForce() {
-    // Aquí se integrará la lógica de medición con el dinamómetro.
-    print("Medir fuerza máxima");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MVCMeasure(
+          miniJuegoId: "resistencia",
+          onMaxForceSaved: (maxForce) {
+            Provider.of<ResistanceSettingsProvider>(context, listen: false)
+                .setMaxForce(maxForce);
+            // Volver a ResistenciaSetMenu después de guardar el valor
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => ResistenciaSetMenu()),
+            );
+          },
+          onExit: () {
+            final bluetoothManager =
+            Provider.of<BluetoothManager>(context, listen: false);
+            final device = bluetoothManager.connectedDevice;
+            if (device != null) {
+              bluetoothManager.stopReceivingMeasurements(device);
+            }
+            // Asegurar que se vuelve a ResistenciaSetMenu si se sale sin guardar
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => ResistenciaSetMenu()),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   void _modifyInterval(bool isLower) {
-    int currentValue = isLower ? lowerBound : upperBound;
+    int currentValue = isLower ? settings.lowerBound : settings.upperBound;
 
     showDialog(
       context: context,
@@ -92,9 +114,9 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
                 if (newValue != null && newValue >= 0 && newValue <= 100) {
                   setState(() {
                     if (isLower) {
-                      lowerBound = newValue;
+                      settings.lowerBound = newValue;
                     } else {
-                      upperBound = newValue;
+                      settings.upperBound = newValue;
                     }
                   });
                   Navigator.pop(context);
@@ -150,16 +172,7 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
     // Navegar al juego
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => ResistanceGameScreen(
-        maxForce: maxForce,
-        lowerBound: lowerBound,
-        upperBound: upperBound,
-        amountReps: amountReps,
-        lenghtRep: lenghtRep,
-        lenghtRest: lenghtRest,
-        setRest: lenghtRestSet,
-        amountSets: amountSets,
-      )),
+      MaterialPageRoute(builder: (context) => ResistanceGameScreen()),
     );
   }
 
@@ -222,11 +235,11 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
-                                  hintText: "$maxForce kg",
+                                  hintText: "${settings.maxForce} kg",
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    maxForce = double.tryParse(value) ?? 0.0;
+                                    settings.maxForce = double.tryParse(value) ?? 0.0;
                                   });
                                 },
                               ),
@@ -246,21 +259,21 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _intervalButton(lowerBound, true),
+                            _intervalButton(settings.lowerBound, true),
                             SizedBox(width: 10),
                             Text("-", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                             SizedBox(width: 10),
-                            _intervalButton(upperBound, false),
+                            _intervalButton(settings.upperBound, false),
                           ],
                         ),
                         SizedBox(height: 20),
-                        _configOption("Repeticiones", amountReps, 1, 20, (val) => setState(() => amountReps = val)),
-                        _configOption("Duración Repetición (s)", lenghtRep, 1, 60, (val) => setState(() => lenghtRep = val)),
-                        _configOption("Duración Descanso (s)", lenghtRest, 1, 60, (val) => setState(() => lenghtRest = val)),
+                        _configOption("Repeticiones", settings.amountReps, 1, 20, (val) => setState(() => settings.amountReps = val)),
+                        _configOption("Duración Repetición (s)", settings.lengthRep, 1, 60, (val) => setState(() => settings.lengthRep = val)),
+                        _configOption("Duración Descanso (s)", settings.lengthRest, 1, 60, (val) => setState(() => settings.lengthRest = val)),
                         SizedBox(height: 20),
                         Text("Configuración de sets", style: titulosCard),
-                        _configOption("Sets", amountSets, 1, 10, (val) => setState(() => amountSets = val)),
-                        _configOption("Duración Descanso Set (s)", lenghtRestSet, 10, 60, (val) => setState(() => lenghtRestSet = val)),
+                        _configOption("Sets", settings.amountSets, 1, 10, (val) => setState(() => settings.amountSets = val)),
+                        _configOption("Duración Descanso Set (s)", settings.lengthRestSet, 10, 60, (val) => setState(() => settings.lengthRestSet = val)),
                       ],
                     ),
                   ),
