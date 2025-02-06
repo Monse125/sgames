@@ -7,6 +7,7 @@ import 'popups/tare_popup.dart';
 import 'package:flutter/services.dart';
 // Archivo con AppBluetoothState
 import 'gamesMenus/resistencia_set_menu.dart';
+import 'package:sgames/views/settings_view.dart';
 
 class MainMenu extends StatelessWidget {
   const MainMenu({super.key});
@@ -55,9 +56,8 @@ class MainMenu extends StatelessWidget {
                 ],
               ),
               Wrap(
-                runSpacing: 16,
+                runSpacing: 10,
                 children: [
-                  modeButton('Fuerza', Colors.orangeAccent, widthButton),
                   modeButton('Resistencia', Colors.orangeAccent, widthButton,
                       onTap: () {
                         Navigator.push(
@@ -103,6 +103,7 @@ class MainMenu extends StatelessWidget {
                   return TarePopup();
                 },
               );
+
             } else {
               // Muestra una alerta si no hay dispositivo conectado
               ScaffoldMessenger.of(context).showSnackBar(
@@ -113,13 +114,19 @@ class MainMenu extends StatelessWidget {
               );
             }
           }
+          if (icon == FontAwesomeIcons.gear) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SettingsView()),
+            );
+          }
         },
         fillColor: Colors.white,
         shape: CircleBorder(),
-        constraints: BoxConstraints(minHeight: 55, minWidth: 55),
+        constraints: BoxConstraints(minHeight: 70, minWidth: 70),
         child: FaIcon(
           icon,
-          size: 45,
+          size: 50,
           color: Colors.deepOrangeAccent,
         ),
       ),

@@ -144,7 +144,7 @@ class BluetoothConnector {
   Future<BluetoothDevice?> getLastConnectedDevice() async {
     if (lastDeviceId == null) return null;
     List<BluetoothDevice> connectedDevices =
-    FlutterBluePlus.connectedDevices;
+        FlutterBluePlus.connectedDevices;
 
     for (var device in connectedDevices) {
       if (device.remoteId.toString() == lastDeviceId) {
@@ -192,9 +192,9 @@ class BluetoothConnector {
     await dataPointCharacteristic!.setNotifyValue(true);
     _weightStreamSubscription = dataPointCharacteristic!.lastValueStream.listen(
           (data) {
-            //print("Datos recibidos: $data");
-            final weight = _extractWeightFromData(Uint8List.fromList(data));
-            onWeightChanged?.call(weight);
+        //print("Datos recibidos: $data");
+        final weight = _extractWeightFromData(Uint8List.fromList(data));
+        onWeightChanged?.call(weight);
       },
     );
   }
