@@ -5,17 +5,46 @@ SGames plantea minijuegos con los que el usuario pueda entrenar la fuerza, busca
 
 SGames evaluará el desempeño del paciente en los minijuegos gracias al Tindeq Progressor, un dinamómetro inalámbrico validado para la medición del torque máximo en la extensión de rodilla isométrica con el estándar de referencia de un dinamómetro isocinético y una buena validez para identificar el índice de simetría de las extremidades. Este dispostivo es requisito para poder utilizar jugar con SGames.
 
-## Tabla de contenidos
+## Guía Rapida
 
-## Requisitos
+- [Instrucciones para Usuarios Finales](#sgames---usuario-final)
+- [Instrucciones para Desarrolladores](#sgames---desarrolladores)
 
-## Instalación
+## Instrucciones - Usuario Final
 
-## Estructura del Proyecto
+### Requisitos
 
-## Instrucciones para Añadir Nuevos Minijuegos
+Para jugar a SGames, necesitas los siguientes elementos:
 
-## Como Exportar el APK
+- **Dispositivo móvil**: Un teléfono o tablet que posea conexión bluetooth.
+- **Tindeq Progressor**: Este dispositivo es **requisito obligatorio** para jugar.
+
+### Instalación
+
+### Cómo Jugar
+
+### Características
+
+### Solucion de Problemas
+
+## Instrucciones - Desarrolladores
+
+### Requisitos
+
+- **Flutter**: La plataforma de desarrollo móvil utilizada para crear la aplicación.
+- **Dart**: El lenguaje de programación utilizado en el desarrollo.
+
+Se recomienda el uso de Android Studio, pero tambien se puede utilizar Microsoft Studio Code junto a algún tipo de visualizador para conectar el telefono con el cuál debugear.  
+
+### Instalación
+
+### Estructura del Proyecto
+
+### Instrucciones para Añadir Nuevos Minijuegos
+
+### Como Exportar el APK
+
+
 
 ## Contribución
 
@@ -23,5 +52,5 @@ SGames evaluará el desempeño del paciente en los minijuegos gracias al Tindeq 
 
 ## Contacto
 
-
+Si tienes preguntas o necesitas ayuda con la instalación o uso de SGames, puedes contactar con monserratmonterot@gmail.com.
 
