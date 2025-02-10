@@ -41,7 +41,7 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
         return AlertDialog(
           title: Text("Tutorial de Resistencia"),
           content: Text(
-            "Aquí estaría la explicación de este minijuego si tan solo hubiese escrito la explicación de este minijuego :D.",
+            "Haz fuerza en el Tindeq Progressor para moverte de lado a lado y evitar chocar con las paredes. :D",
           ),
           actions: [
             TextButton(

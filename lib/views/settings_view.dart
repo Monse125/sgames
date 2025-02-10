@@ -29,8 +29,6 @@ class SettingsView extends StatelessWidget {
                 ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Tipo: Error al obtener datos"',
-                    style: const TextStyle(fontSize: 18)),
                 Text('Nombre: Error al obtener datos"',
                     style: const TextStyle(fontSize: 18)),
                 Text('Batería: Error al obtener datos"',
