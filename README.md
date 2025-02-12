@@ -43,7 +43,7 @@ Para jugar a SGames, necesitas los siguientes elementos:
 * **La conexión se interrumpe:** Ve a la interfaz de conexión bluetooth dentro de la aplicación, descontecta el dispositivo Tindeq Progressor y vuelve a conectarlo. Si el error continua reiniciar la aplicación.
 * **Error en la instalación:** Verifica que has habilitado la instalación desde orígenes desconocidos en la configuración de tu teléfono.
 
-## Instrucciones - Desarrolladores
+## 📥 Instrucciones - Desarrolladores
 
 ### Requisitos
 
