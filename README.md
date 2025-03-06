@@ -45,28 +45,81 @@ Para jugar a SGames, necesitas los siguientes elementos:
 
 ## 📥 Instrucciones - Desarrolladores
 
-### Requisitos
+### 📋 Requisitos
 
 - **Flutter**: La plataforma de desarrollo móvil utilizada para crear la aplicación.
-- **Dart**: El lenguaje de programación utilizado en el desarrollo.
+- **Dart SDK**: El lenguaje de programación utilizado en el desarrollo (incluido con Flutter).
 
-Se recomienda el uso de Android Studio, pero tambien se puede utilizar Microsoft Studio Code junto a algún tipo de visualizador para conectar el telefono con el cuál debugear.  
+- **Android Studio** (recomendado) o **Visual Studio Code** con las extensiones:
 
-### Instalación
-
-### Estructura del Proyecto
-
-### Instrucciones para Añadir Nuevos Minijuegos
-
-### Como Exportar el APK
+    - Flutter
+    - Dart
 
 
+### ⚙ Instalación
 
-## Contribución
+1. **Clona el repositorio desde Github:**
+2. **Instala las dependencias:**
+flutter pub get
 
-## Licencia
+3. **Conecta un dispoitivo físico** con Bluetooth habilitado para pruebas:
+4. **Ejecuta la aplicación:**
+flutter run
 
-## Contacto
+
+### 📁 Estructura del Proyecto
+
+SGames/
+├── lib/
+│   ├── controllers/           # Lógica de controladores (Bluetooth).
+│   ├── games/                 # Carpetas con logica de cada minijuego.
+│   ├──   ├── resistencia/     # Objetos e implementación de minijuego "Resistencia".
+│   ├── providers/             # Manejo de estados (Provider).
+│   ├──   ├── gameSettings/    # Estados para los settings de los minijuegos.
+│   ├──   ├──   ├── settings/  # Clases con los valores de los settings de los minijuegos.
+│   ├── views/                 # Interfaces de usuario (UI).
+│   ├──   ├── gameMenus/       # Menus para cada minijuego.
+│   ├──   ├── popups/          # Popups.
+│   ├── main.dart              # Punto de entrada de la app.
+├── assets/                    # Imágenes y sonidos.
+│   ├── images/                        
+├── pubspec.yaml               # Dependencias y configuraciones
+├── README.md
+
+
+### 🚀 Instrucciones para Añadir Nuevos Minijuegos
+
+Para agregar un nuevo minijuego a SGames, sigue estos pasos:
+
+1. **Crea el menú del nuevo minijuego en la carpeta** `lib/view/gameMenus:
+    - En caso de necesitar guardar settings para el minijuego, crea el provider minijuego_settings_provider.dart en `lib/providers/gamesSettings y una clase de atributos nombre_minijuego_game_settings.dart en lib/providers/gamesSettings/settings
+2. **Actualiza** `lib/views/main_menu para las rutas correspondientes al menu del nuevo minijuego.
+3. **Crea una carpeta nueva en** `lib/games/:
+4. **Crea los archivos necesarios** (En caso de estar usando Flame para tu minijuego):
+    - nombre_minijuego_game_screen.dart
+    - nombre_minijuego_game.dart
+
+    Si no usas Flame, de todas formas dividde la lógica entre controller y view.
+
+5. **Define la lógica del minijuego**:
+    - Implementa los controles y la lógica en el archivo game.
+6. **Integra con el Tindeq Progressor**:
+    - Utiliza los metodos en el `lib/providders/bluetooth_manager o agrega los que necesites.
+    - Para agregar metodos, debes considerar que `bluetooth_manager llama metodos en lib/controllers/bluetooth_conector
+    - Se espera que las views y juegos no interactuen directamente con `bluetooth_conector, sino con bluetooth_manager.
+7. **Conecta el juego a su menu de minijuego para poder iniciarlo desde ahi** 
+
+### 📦 Como Exportar el APK
+
+Para generar el archivo APK de SGames:
+
+#### 1. Cambia al modo release:
+flutter build apk --release
+
+#### 2. Encuentra el APK generado en: 
+build/app/outputs/flutter-apk/app-release.apk
+
+
+## 📫 Contacto
 
 Si tienes preguntas o necesitas ayuda con la instalación o uso de SGames, puedes contactar con monserratmonterot@gmail.com.
-
