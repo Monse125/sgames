@@ -17,6 +17,9 @@ class BluetoothManager with ChangeNotifier {
     };
   }
 
+  String? deviceName() {
+    return _connectedDevice?.platformName;
+  }
   BluetoothDevice? get connectedDevice => _connectedDevice;
   bool get isScanning => _isScanning;
 

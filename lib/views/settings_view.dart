@@ -29,9 +29,9 @@ class SettingsView extends StatelessWidget {
                 ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Nombre: Error al obtener datos"',
+                Text('Nombre: ${bluetoothManager.deviceName()}"',
                     style: const TextStyle(fontSize: 18)),
-                Text('Batería: Error al obtener datos"',
+                Text('Batería: --- No implementado --"',
                     style: const TextStyle(fontSize: 18)),
               ],
             )
