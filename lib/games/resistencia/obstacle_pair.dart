@@ -1,4 +1,6 @@
+
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
 import 'obstaculo.dart';
 import 'resistencia_game.dart';
 
@@ -40,9 +42,23 @@ class ObstaclePair {
     game.add(lower);
   }
 
+
+
+  void markAsError() {
+    if (!wasError) {
+      wasError = true;
+
+      // Cambiar el color del obstáculo para indicar error
+      upper.pintar(Colors.black);
+      lower.pintar(Colors.black);
+    }
+  }
+
   void update(double dt) {
     upper.position.y += speed * dt;
     lower.position.y += speed * dt;
+
+
 
     if (upper.position.y > screenHeight || lower.position.y > screenHeight) {
       inScreen = false;

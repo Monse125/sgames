@@ -32,6 +32,8 @@ class ResistanceGame extends FlameGame with TapDetector {
   int completedSets = 0;
 
   List<ObstaclePair> activeObstacles = [];
+  List<ObstaclePair> obstaclesToRemove = [];
+
   int obstacleIdCounter = 0;
 
   bool gameStarted = false;
@@ -140,6 +142,7 @@ class ResistanceGame extends FlameGame with TapDetector {
     activeObstacles.clear(); // Reiniciar obstáculos para el nuevo set
     gameStarted = true;
     showingCountdown = false;
+    totalErrors = 0;
     startRep();
   }
 
@@ -191,7 +194,6 @@ class ResistanceGame extends FlameGame with TapDetector {
   void showRestText() async {
     showingRestText = true;
     gameStarted = false;
-    totalErrors = activeObstacles.where((pair) => pair.wasError).length;
     endText.text = "Errores: $totalErrors";
     if (completedSets < amountSets) {
       await Future.delayed(Duration(seconds: setRest - 5));
@@ -199,6 +201,7 @@ class ResistanceGame extends FlameGame with TapDetector {
       countdownText.text = "¡Prepárate!";
       startCountdown();
     }
+
     showingRestText = false;
   }
 
@@ -244,12 +247,20 @@ class ResistanceGame extends FlameGame with TapDetector {
       obstaclePair.update(dt);  // <-- Aquí llamamos a la actualización de los obstáculos
 
       if (ball.toRect().overlaps(obstaclePair.upper.toRect()) ||
-          ball.toRect().overlaps(obstaclePair.lower.toRect())) {
-        obstaclePair.wasError = true;
+         ball.toRect().overlaps(obstaclePair.lower.toRect())) {
+        if (!obstaclePair.wasError){
+          obstaclePair.markAsError();
+          totalErrors += 1;
+        }
+      }
+
+      if (!obstaclePair.inScreen) {
+        obstaclesToRemove.add(obstaclePair);
       }
     }
 
-    activeObstacles.removeWhere((pair) => !pair.inScreen);
+    // Remover obstáculos que ya salieron de la pantalla
+    activeObstacles.removeWhere((pair) => obstaclesToRemove.contains(pair));
 
     // Verificar si el set ha terminado y no quedan obstáculos en pantalla
     if (!gameStarted && activeObstacles.isEmpty && !showingRestText && !showingCountdown && !gameEnds) {
