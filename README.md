@@ -68,7 +68,7 @@ flutter run
 
 
 ### 📁 Estructura del Proyecto
-
+```
 SGames/
 ├── lib/
 │   ├── controllers/           # Lógica de controladores (Bluetooth).
@@ -86,15 +86,15 @@ SGames/
 ├── pubspec.yaml               # Dependencias y configuraciones
 ├── README.md
 
-
+```
 ### 🚀 Instrucciones para Añadir Nuevos Minijuegos
 
 Para agregar un nuevo minijuego a SGames, sigue estos pasos:
 
-1. **Crea el menú del nuevo minijuego en la carpeta** `lib/view/gameMenus:
+1. **Crea el menú del nuevo minijuego en la carpeta** `lib/view/gameMenus`:
     - En caso de necesitar guardar settings para el minijuego, crea el provider minijuego_settings_provider.dart en `lib/providers/gamesSettings y una clase de atributos nombre_minijuego_game_settings.dart en lib/providers/gamesSettings/settings
-2. **Actualiza** `lib/views/main_menu para las rutas correspondientes al menu del nuevo minijuego.
-3. **Crea una carpeta nueva en** `lib/games/:
+2. **Actualiza** `lib/views/main_menu` para las rutas correspondientes al menu del nuevo minijuego.
+3. **Crea una carpeta nueva en** `lib/games/`:
 4. **Crea los archivos necesarios** (En caso de estar usando Flame para tu minijuego):
     - nombre_minijuego_game_screen.dart
     - nombre_minijuego_game.dart
@@ -114,10 +114,10 @@ Para agregar un nuevo minijuego a SGames, sigue estos pasos:
 Para generar el archivo APK de SGames:
 
 #### 1. Cambia al modo release:
-flutter build apk --release
+`flutter build apk --release`
 
 #### 2. Encuentra el APK generado en: 
-build/app/outputs/flutter-apk/app-release.apk
+`build/app/outputs/flutter-apk/app-release.apk`
 
 
 ## 📫 Contacto
