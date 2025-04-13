@@ -68,7 +68,7 @@ flutter run
 
 
 ### 📁 Estructura del Proyecto
-
+```
 SGames/
 ├── lib/
 │   ├── controllers/           # Lógica de controladores (Bluetooth).
@@ -86,15 +86,15 @@ SGames/
 ├── pubspec.yaml               # Dependencias y configuraciones
 ├── README.md
 
-
+```
 ### 🚀 Instrucciones para Añadir Nuevos Minijuegos
 
 Para agregar un nuevo minijuego a SGames, sigue estos pasos:
 
-1. **Crea el menú del nuevo minijuego en la carpeta** `lib/view/gameMenus:
-    - En caso de necesitar guardar settings para el minijuego, crea el provider minijuego_settings_provider.dart en `lib/providers/gamesSettings y una clase de atributos nombre_minijuego_game_settings.dart en lib/providers/gamesSettings/settings
-2. **Actualiza** `lib/views/main_menu para las rutas correspondientes al menu del nuevo minijuego.
-3. **Crea una carpeta nueva en** `lib/games/:
+1. **Crea el menú del nuevo minijuego en la carpeta** `lib/view/gameMenus`:
+    - En caso de necesitar guardar settings para el minijuego, crea el provider minijuego_settings_provider.dart en `lib/providers/gamesSettings` y una clase de atributos nombre_minijuego_game_settings.dart en `lib/providers/gamesSettings/settings`
+2. **Actualiza** `lib/views/main_menu` para las rutas correspondientes al menu del nuevo minijuego.
+3. **Crea una carpeta nueva en** `lib/games/`:
 4. **Crea los archivos necesarios** (En caso de estar usando Flame para tu minijuego):
     - nombre_minijuego_game_screen.dart
     - nombre_minijuego_game.dart
@@ -104,8 +104,8 @@ Para agregar un nuevo minijuego a SGames, sigue estos pasos:
 5. **Define la lógica del minijuego**:
     - Implementa los controles y la lógica en el archivo game.
 6. **Integra con el Tindeq Progressor**:
-    - Utiliza los metodos en el `lib/providders/bluetooth_manager o agrega los que necesites.
-    - Para agregar metodos, debes considerar que `bluetooth_manager llama metodos en lib/controllers/bluetooth_conector
+    - Utiliza los metodos en el `lib/providders/bluetooth_manager` o agrega los que necesites.
+    - Para agregar metodos, debes considerar que bluetooth_manager llama metodos en `lib/controllers/bluetooth_conector`
     - Se espera que las views y juegos no interactuen directamente con `bluetooth_conector, sino con bluetooth_manager.
 7. **Conecta el juego a su menu de minijuego para poder iniciarlo desde ahi** 
 
@@ -114,10 +114,10 @@ Para agregar un nuevo minijuego a SGames, sigue estos pasos:
 Para generar el archivo APK de SGames:
 
 #### 1. Cambia al modo release:
-flutter build apk --release
+`flutter build apk --release`
 
 #### 2. Encuentra el APK generado en: 
-build/app/outputs/flutter-apk/app-release.apk
+`build/app/outputs/flutter-apk/app-release.apk`
 
 
 ## 📫 Contacto
