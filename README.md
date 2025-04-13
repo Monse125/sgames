@@ -1,6 +1,6 @@
 # 📌 SGames
 
-**Creadora:** Monserrat Montero  
+**Creadora:** Monserrat Montero T.
 **Organización:** Centro de Informática Médica y Telemedicina, Universidad de Chile
 
 SGames es un videojuego móvil diseñado para guiar y hacer más lúdico e interesante el entrenamiento y rehabilitación de pacientes, con patologías que afecten a las articulaciones, mediante ejercicios isométricos.
