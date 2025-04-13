@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
@@ -60,11 +62,12 @@ class ResistanceGame extends FlameGame with TapDetector {
 
   @override
   Future<void> onLoad() async {
+    double sizeball = min(50,(upperBound-lowerBound)*1.8);
 
     // Cargar la pelota
     ball = SpriteComponent(
-        sprite: await loadSprite("ball.png"),
-      size: Vector2(50, 50),
+      sprite: await loadSprite("ball.png"),
+      size:  Vector2(sizeball,sizeball),
       position: Vector2(
         size.x * ((currentForce / maxForce)),
         size.y * 7 / 9,
