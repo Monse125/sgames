@@ -1,4 +1,8 @@
 # 📌 SGames
+
+**Creadora:** Monserrat Montero  
+**Organización:** Centro de Informática Médica y Telemedicina, Universidad de Chile
+
 SGames es un videojuego móvil diseñado para guiar y hacer más lúdico e interesante el entrenamiento y rehabilitación de pacientes, con patologías que afecten a las articulaciones, mediante ejercicios isométricos.
 
 SGames plantea minijuegos con los que el usuario pueda entrenar la fuerza, buscando abarcar las siguientes componentes de esta: Fuerza, potencia, control, propiocepción y resistencia. Estos minijuegos serán diseñados para que el paciente pueda progresar en su entrenamiento, cambiando la dificultad según sus necesidades y condiciones.
@@ -113,7 +117,7 @@ Para agregar un nuevo minijuego a SGames, sigue estos pasos:
 
 Para generar el archivo APK de SGames:
 
-#### 1. Cambia al modo release:
+#### 1. Crea el APK:
 `flutter build apk --release`
 
 #### 2. Encuentra el APK generado en: 
