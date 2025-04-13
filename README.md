@@ -8,7 +8,7 @@ SGames evaluará el desempeño del paciente en los minijuegos gracias al Tindeq 
 ## Guía Rapida
 
 - [Instrucciones para Usuarios Finales](#-instrucciones---usuario-final)
-- [Instrucciones para Desarrolladores](#-instrucciones---desarroladores)
+- [Instrucciones para Desarrolladores](#-instrucciones---desarrolladores)
 
 ## 📥 Instrucciones - Usuario Final
 
