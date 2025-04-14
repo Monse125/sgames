@@ -180,6 +180,12 @@ class _ResistenciaSetMenuState extends State<ResistenciaSetMenu> {
 
   @override
   Widget build(BuildContext context) {
+    // Corrige si hay conflicto
+    if (settings.lowerBound >= settings.upperBound) {
+      settings.upperBound = (settings.lowerBound + 1).clamp(1, 100);
+    }
+
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
