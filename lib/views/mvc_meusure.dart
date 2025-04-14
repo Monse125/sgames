@@ -54,7 +54,7 @@ class _MVCMeasureState extends State<MVCMeasure> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Medición de Fuerza Máxima Voluntaria"),
+        title: const Text("Fuerza Máxima Voluntaria"),
         leading: IconButton(
             onPressed: _handleExit,
             icon: const Icon(Icons.arrow_back)),
@@ -106,7 +106,7 @@ class _MVCMeasureState extends State<MVCMeasure> {
                               color: currentWeight == maxForce
                                   ? Colors.green // Color verde si es el máximo
                                   : Colors.blue, // Color azul para los demás valores
-                              width: 20,
+                              width: 80,
                               borderRadius: BorderRadius.zero,
                             ),
                           ],
@@ -135,7 +135,7 @@ class _MVCMeasureState extends State<MVCMeasure> {
                     widget.onMaxForceSaved(truncatedMaxForce);
                     _handleExit();
                   },
-                  child: const Text("Usar MVC"),
+                  child: const Text("Usar MVC", style: TextStyle(fontSize: 22)),
                 ),
               ),
             ],
